@@ -1,0 +1,51 @@
+// Retrieve reportAppFactory
+		oReportAppFactory = (IReportAppFactory)es.getService("", "RASReportService");
+	
+		// Create a new blank report	
+		oReportClientDocument = oReportAppFactory.newDocument(java.util.Locale.ENGLISH);
+ 
+              // Add some Database tables
+		addDatabaseTables(oReportClientDocument, "Xtreme Sample Database 11.5", "","","", new String[] {"Customer", "Orders"});
+ 
+ 
+//Below ismethod of addDatabaseTables
+ 
+	public void addDatabaseTables(ReportClientDocument rpt, String dsn, String db, String userName, String pwd, String[] table_names) throws ReportSDKException
+	{
+		String database_dll = "crdb_odbc.dll";
+		
+		// Create the DB connection
+		ConnectionInfo oConnectionInfo = new ConnectionInfo();
+		PropertyBag oPropertyBag1 = oConnectionInfo.getAttributes();
+		
+		// Set new table logon properties
+		PropertyBag oPropertyBag2 = new PropertyBag();
+		oPropertyBag2.put("DSN", dsn);
+		oPropertyBag2.put("Data Source", db);
+		
+		// Set the connection info objects members
+		// 1. Pass the Logon Properties to the main PropertyBag
+		// 2. Set the Server Description to the new **System DSN**
+		oPropertyBag1.put(PropertyBagHelper.CONNINFO_CRQE_LOGONPROPERTIES, oPropertyBag2);
+		oPropertyBag1.put(PropertyBagHelper.CONNINFO_CRQE_SERVERDESCRIPTION, dsn);
+		oPropertyBag1.put("Database DLL", database_dll);
+ 
+		oConnectionInfo.setAttributes(oPropertyBag1);
+		oConnectionInfo.setUserName(userName);
+		oConnectionInfo.setPassword(pwd);
+		
+		// The Kind of connectionInfos is CRQE (Crystal Reports Query Engine).
+		oConnectionInfo.setKind(ConnectionInfoKind.CRQE);
+		
+		// Now create and add the tables
+		Table oTable;
+		String table_name;
+		for (int i = 0; i < table_names.length; i++) {
+			table_name = table_names<i>;
+			oTable = new Table();
+			oTable.setName(table_name);
+			oTable.setConnectionInfo(oConnectionInfo);
+			rpt.getDatabaseController().addTable(oTable, null);
+		}
+	}
+ 
