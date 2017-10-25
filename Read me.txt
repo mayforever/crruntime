@@ -1,4 +1,0 @@
-1. make prompter.jar shorcut
-2. windows r imput "shell:startup" 
-3. copy prompter shorcut
-4. restart computer
