@@ -180,3 +180,5 @@ to use PrintRequest.
 then send udp data to 15000
 
 its good to make a shorcut jar of prompter and copy it to start up.
+
+see https://github.com/mayforever/JavaTools for other lib files
